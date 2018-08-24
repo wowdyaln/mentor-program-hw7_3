@@ -11,7 +11,7 @@ $sql = "SELECT id FROM `users` WHERE `username` = '{$username}' AND `password` =
 if ( $conn->query($sql)->num_rows === 1) 
 {
   //find the user's id
-$userId = $conn->query($sql)->num_rows;
+$userId = $conn->query($sql)->fetch_assoc()['id'];
 $cookie = $userId;
 // setcookie($name, $value, $expire)
 setcookie("week5", $cookie, time()+60*3);

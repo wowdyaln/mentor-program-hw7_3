@@ -11,8 +11,19 @@
 <body>
     <span class="loginStatus"> 
     <?php
+    //conncet to mySQL
+    require './db/conn.php';
+
     if ( isset($_COOKIE["week5"])){
-      echo "login ✅";
+            // find a user according to Cookies.
+      $id = $_COOKIE["week5"];
+      $findUser = "SELECT * FROM users WHERE id = '{$id}'";
+      $nk = $conn->query($findUser)->fetch_assoc()['nickname'];
+      $un = $conn->query($findUser)->fetch_assoc()['username'];
+
+      echo "login ✅ <br>
+            Hi ! $un <br>
+            ($nk)";
     } else {
       echo "login ❌
       <br>
@@ -33,8 +44,6 @@
     <!-- <form action=./showBoard.php method=post> -->
       <div class=container__input>
       <h2>輸入主留言</h2>
-          <label for=nickname>Nickname</label>
-          <input type=text name=nickname id=nickname required>
           <label for=main_comment>Comment</label>
           <textarea rows=5 cols=30 name=main_comment id=main_comment required></textarea>
           <button type=submit>submit</button>
@@ -43,7 +52,7 @@
     }
     
 //conncet to mySQL
-require './db/conn.php';
+// require './db/conn.php';
 //
 $howManyComments = "SELECT COUNT(id) AS comment_count FROM comments";
 $res = $conn->query($howManyComments);
@@ -97,8 +106,6 @@ if ($sub_result->num_rows > 0) {
           <form action=./comments/sub_comment.php method=post>
             <div class=container__input>
               <h2>子留言</h2>
-              <label for=nickname>Nickname</label>
-              <input type=text name=nickname id=nickname required>
               <label for=sub_comment>Comment</label>
               <textarea rows=5 cols=30 name=sub_comment id=sub_comment required></textarea>
               <input type=hidden name=comment_id value={$id}>

@@ -12,6 +12,7 @@
   position: fixed;
   left: 10px;
   top: 80px;
+  color: grey;
 }
 
 .container {
@@ -57,7 +58,7 @@ button {
   display: flex;
   flex-direction: column;
   /* border: solid red ; */
-  background-color: pink;
+  background-color: rgb(226, 223, 223);
 }
 
 .box__nickname {

@@ -3,7 +3,12 @@
       <?php
       //conncet to mySQL
       require '../db/conn.php';
-      $nickname = $_POST['nickname'];
+
+      // find a user according to Cookies.
+      $id = $_COOKIE["week5"];
+      $findNickname = "SELECT * FROM users WHERE id = '{$id}'";
+      $nickname = $conn->query($findNickname)->fetch_assoc()['nickname'];
+      // 
       $comment = $_POST['main_comment'];
       $writeAcomment = "INSERT INTO `comments` (`id`, `nickname`, `content`) VALUES (NULL, '$nickname', '$comment' )";
 

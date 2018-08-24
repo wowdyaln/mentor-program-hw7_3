@@ -1,5 +1,5 @@
 <?
-require './db/conn.php';
+require './conn.php';
 
 $nicknames = ["Scott and Zelda Fitzgerald",
 "Jean Cocteau",
