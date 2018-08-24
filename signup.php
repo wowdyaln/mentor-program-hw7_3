@@ -1,6 +1,6 @@
 <?
   //conncet to mySQL
-require('conn.php');
+require('./db/conn.php');
 
 
 
@@ -11,7 +11,7 @@ require('conn.php');
   $sql = "INSERT INTO `users` (`id`, `username`, `password`) VALUES (NULL, '{$username}', '{$password}') ";
 
   if ( $conn->query($sql) ) {
-    echo "New record created successfully 
+    echo "New user created successfully 
     {$username}  你好！
     ";
 } else {
@@ -20,5 +20,5 @@ require('conn.php');
 sql: {$sql}  ";
 }
 
-echo "<br> <a href=./index.php> index page </a>";
+echo "<br> <a href=./board.php> 留言板 </a>";
 ?>

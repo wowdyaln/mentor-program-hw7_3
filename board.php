@@ -9,22 +9,39 @@
   <title>message board</title>
 </head>
 <body>
+    <span class="loginStatus"> 
+    <?php
+    if ( isset($_COOKIE["week5"])){
+      echo "login ✅";
+    } else {
+      echo "login ❌
+      <br>
+      要登入才能留言
+      <br>
+      <a href=./verify.php>登入頁面</a>
+      ";
+    }
+    
+    ?>
+    </span>
   <div class="container">
-    <!-- write a main comment -->
-    <form action="./comments/comment.php" method="post">
-    <!-- <form action="./showBoard.php" method="post"> -->
-      <div class="container__input">
-      <h2>輸入主留言</h2>
-          <label for="nickname">Nickname</label>
-          <input type="text" name="nickname" id="nickname" required>
-          <label for="main_comment">Comment</label>
-          <textarea rows="5" cols="30" name="main_comment" id="main_comment" required></textarea>
-          <button type="submit">submit</button>
-      </div>
-    </form>
-
 <?php
-
+    if ( isset($_COOKIE["week5"])){
+      echo "
+    <!-- write a main comment -->
+    <form action=./comments/comment.php method=post>
+    <!-- <form action=./showBoard.php method=post> -->
+      <div class=container__input>
+      <h2>輸入主留言</h2>
+          <label for=nickname>Nickname</label>
+          <input type=text name=nickname id=nickname required>
+          <label for=main_comment>Comment</label>
+          <textarea rows=5 cols=30 name=main_comment id=main_comment required></textarea>
+          <button type=submit>submit</button>
+      </div>
+    </form>";
+    }
+    
 //conncet to mySQL
 require './db/conn.php';
 //
@@ -74,6 +91,7 @@ if ($sub_result->num_rows > 0) {
           </div>";
     }
 }
+          if ( isset($_COOKIE["week5"])){
           echo"
           <!-- write a sub comment here -->
           <form action=./comments/sub_comment.php method=post>
@@ -86,8 +104,10 @@ if ($sub_result->num_rows > 0) {
               <input type=hidden name=comment_id value={$id}>
               <button type=submit>submit</button>
             </div>
-          </form>
-        </div>";
+          </form>";
+          }
+
+        echo "</div>";
         }
       }
 
