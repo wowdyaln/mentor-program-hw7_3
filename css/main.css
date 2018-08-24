@@ -1,0 +1,93 @@
+/* 
+* html 架構：
+
+.container > .box > .comment (s)> .nickname
+                                > .content
+                                > .reply (s) > .nickname 
+                                             > .content
+            > .page
+*/
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+label {
+  margin: 5px;
+}
+
+.container__input {
+  width: 80%;
+  margin: 20px auto;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  border: solid gold ;
+  background-color: snow;
+}
+
+button {
+  margin: 20px;
+  font-size: 18px;
+  background-color: #00a0e9;
+  color: white;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+
+.container__box {
+  width: 80%;
+  margin: 5px auto;
+  display: flex;
+  flex-direction: column;
+  /* border: solid red ; */
+  background-color: pink;
+}
+
+.box__nickname {
+  /* border: dashed black; */
+  margin: 10px;
+  font-size: 24px;
+}
+
+.box__content {
+  /* border: dashed black; */
+  margin: 5px 10px;
+}
+
+.box__reply {
+  width: 80%;
+  border: dashed green;
+  background-color: #F2F5F7;
+  margin: 15px 10% 0px 10%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reply__nickname {
+  /* border: solid rgb(77, 144, 170); */
+  margin: 5px 10px;
+  color: #00a0e9;
+}
+
+.reply__content {
+  margin: 5px 10px;
+  color: black;
+}
+
+.page {
+  display: flex;
+  font-size: 26px;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+}
