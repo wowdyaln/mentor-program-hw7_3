@@ -254,8 +254,9 @@ if ($conn->query($getCommentsId)) {
 for ($i=0; $i < count($users); $i++){
   $user = $users[$i];
   $nickname = $nicknames[ mt_rand(0, count($nicknames)-1 )];
+  $password = password_hash('123', PASSWORD_DEFAULT);
 
-  $createUser = "INSERT INTO `users` (`id`, `username`, `nickname`, `password`) VALUES (NULL, '{$user}', '{$nickname}', '123');";
+  $createUser = "INSERT INTO `users` (`id`, `username`, `nickname`, `password`) VALUES (NULL, '{$user}', '{$nickname}', '{$password}') ";
   if ($conn->query($createUser)) {
     echo "good! create a user: '$user'. <br> ";
   } else {

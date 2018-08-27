@@ -14,8 +14,10 @@ require('./db/conn.php');
   $nickname = htmlspecialchars($raw_nickname, ENT_QUOTES);
   $password = htmlspecialchars($raw_password, ENT_QUOTES);
 
+  // password 要經過 hash function，存 hash 進資料庫。
+  $hash = password_hash($password, PASSWORD_DEFAULT);
  
-  $sql = "INSERT INTO `users` (`id`, `username`,nickname, `password`) VALUES (NULL, '{$username}','{$nickname}', '{$password}') ";
+  $sql = "INSERT INTO `users` (`id`, `username`,nickname, `password`) VALUES (NULL, '{$username}','{$nickname}', '{$hash}') ";
 
   if ( $conn->query($sql) ) {
     echo "New user created successfully 
