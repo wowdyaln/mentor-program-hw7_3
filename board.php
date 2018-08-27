@@ -41,7 +41,6 @@
       echo "
     <!-- write a main comment -->
     <form action=./comments/comment.php method=post>
-    <!-- <form action=./showBoard.php method=post> -->
       <div class=container__input>
       <h2>輸入主留言</h2>
           <label for=main_comment>Comment</label>

@@ -9,7 +9,11 @@
       $findNickname = "SELECT nickname FROM users WHERE id = '{$id}'";
       $nickname = $conn->query($findNickname)->fetch_assoc()['nickname'];
       //
-      $comment = $_POST['sub_comment'];
+
+      $raw_comment = $_POST['sub_comment'];
+      // 預防 XSS 腳本寫入攻擊
+      $comment = htmlspecialchars($raw_comment, ENT_QUOTES);
+
       $comment_id = $_POST['comment_id'];
       $write_subComment = "INSERT INTO `sub_comments` (`id`, `comment_id`, `nickname`, `sub_content`, `created_at`) VALUES (NULL, '{$comment_id}', '{$nickname}', '{$comment}', CURRENT_TIMESTAMP)";
 

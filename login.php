@@ -3,13 +3,17 @@
 require('./db/conn.php');
 
 // get data from index.php/form
-$username = $_POST['username'];
-$password = $_POST['password'];
+$raw_username = $_POST['username'];
+$raw_password = $_POST['password'];
+// 預防 XSS 腳本寫入攻擊
+$username = htmlspecialchars($raw_username, ENT_QUOTES);
+$password = htmlspecialchars($raw_password, ENT_QUOTES);
 
-$sql = "SELECT id FROM `users` WHERE `username` = '{$username}' AND `password` = '{$password}' ";
 
-if ( $conn->query($sql)->num_rows === 1) 
-{
+
+$sql = "SELECT id FROM `users` WHERE `username` = '$username' AND `password` = '$password' ";
+
+if ( $conn->query($sql)->num_rows > 0) {
   //find the user's id
 $userId = $conn->query($sql)->fetch_assoc()['id'];
 $cookie = $userId;
