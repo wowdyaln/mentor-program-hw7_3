@@ -5,8 +5,11 @@
   require '../db/conn.php';
 
   // find a user according to Cookies.
-  $id = $_COOKIE["week5"];
-  $findNickname = "SELECT * FROM users WHERE id = '{$id}'";
+  $session = $_COOKIE["week5"];
+  $findUser = "SELECT username FROM users_certificate WHERE `session` = '{$session}'";
+  $user = $conn->query($findUser)->fetch_assoc()['username'];
+
+  $findNickname = "SELECT nickname FROM users WHERE username = '{$user}'";
   $nickname = $conn->query($findNickname)->fetch_assoc()['nickname'];
   
   $raw_comment = $_POST['main_comment'];

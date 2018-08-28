@@ -16,10 +16,12 @@
 
     if ( isset($_COOKIE["week5"])){
             // find a user according to Cookies.
-      $id = $_COOKIE["week5"];
-      $findUser = "SELECT * FROM users WHERE id = '{$id}'";
-      $nk = $conn->query($findUser)->fetch_assoc()['nickname'];
+      $session = $_COOKIE["week5"];
+      $findUser = "SELECT * FROM users_certificate WHERE `session` = '{$session}'";
       $un = $conn->query($findUser)->fetch_assoc()['username'];
+
+      $findNickname = "SELECT nickname FROM `users` WHERE `username` = '{$un}'";
+      $nk = $conn->query($findNickname)->fetch_assoc()['nickname'];
 
       echo "login ✅ <br>
             Hi ! $un <br>
