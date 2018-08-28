@@ -13,12 +13,15 @@ $password = htmlspecialchars($raw_password, ENT_QUOTES);
 $findUser = "SELECT * FROM users WHERE username = '$username' ";
 $hash = $conn->query($findUser)->fetch_assoc()['password'];
 
-
+// 前端的 password 經過hash 之後，跟 後端 hash 比對看看有沒有相同。
 if ( password_verify($password, $hash)){
-  //find the user's id
-$userId = $conn->query($findUser)->fetch_assoc()['id'];
-$cookie = $userId;
+
+$user = $conn->query($findUser)->fetch_assoc()['username'];
+$session = session_create_id();
+$saveSession = "INSERT INTO `users_certificate` (`session`, `username`) VALUES ('{$session}}', '{$user}')";
+$conn->query($saveSession);
 // setcookie($name, $value, $expire)
+$cookie = $session;
 setcookie("week5", $cookie, time() + 60 * 3);
 
 echo "<h2>登入成功</h2>  {$username}  你好！";
@@ -28,6 +31,5 @@ echo "<h2>登入成功</h2>  {$username}  你好！";
 }
 
   echo "<br> <a href=./index.php> index page </a>";
-
 
 ?>
