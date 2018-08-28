@@ -12,16 +12,24 @@ $password = htmlspecialchars($raw_password, ENT_QUOTES);
 // password 要經過 hash function ，然後去對比 hash
 $findUser = "SELECT * FROM users WHERE username = '$username' ";
 $hash = $conn->query($findUser)->fetch_assoc()['password'];
+$findSession = "SELECT * FROM `users_certificate` WHERE `username` = '{$username}'";
 
 // 前端的 password 經過hash 之後，跟 後端 hash 比對看看有沒有相同。
 if ( password_verify($password, $hash)){
 
 $user = $conn->query($findUser)->fetch_assoc()['username'];
-$session = session_create_id();
-$saveSession = "INSERT INTO `users_certificate` (`session`, `username`) VALUES ('{$session}}', '{$user}')";
-$conn->query($saveSession);
+$newSession = session_create_id();
+
+if ($conn->query($findSession)->num_rows === 1){
+  $oldSession = $conn->query($findSession)->fetch_assoc()['session'];
+  $updateSession = "UPDATE `users_certificate` SET `session` = '{$newSession}' WHERE `users_certificate`.`session` = '{$oldSession}' ";
+  $conn->query($updateSession);
+} else {
+  $saveSession = "INSERT INTO `users_certificate` (`session`, `username`) VALUES ('{$newSession}', '{$user}')";
+  $conn->query($saveSession);
+}
 // setcookie($name, $value, $expire)
-$cookie = $session;
+$cookie = $newSession;
 setcookie("week5", $cookie, time() + 60 * 3);
 
 echo "<h2>登入成功</h2>  {$username}  你好！";
