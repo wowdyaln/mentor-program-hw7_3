@@ -14,14 +14,20 @@
     //conncet to mySQL
     require './db/conn.php';
 
+    $un = false;
+    $unId = false;
+    $user_id = false;
+
+
     if ( isset($_COOKIE["week5"])){
             // find a user according to Cookies.
       $session = $_COOKIE["week5"];
-      $findUser = "SELECT * FROM users_certificate WHERE `session` = '{$session}'";
-      $un = $conn->query($findUser)->fetch_assoc()['username'];
-
-      $findNickname = "SELECT nickname FROM `users` WHERE `username` = '{$un}'";
-      $nk = $conn->query($findNickname)->fetch_assoc()['nickname'];
+      $findUsername = "SELECT * FROM users_certificate WHERE `session` = '{$session}'";
+      $un = $conn->query($findUsername)->fetch_assoc()['username'];
+      
+      $findUserInfo = "SELECT * FROM `users` WHERE `username` = '{$un}'";
+      $unId = $conn->query($findUserInfo)->fetch_assoc()['id'];
+      $nk = $conn->query($findUserInfo)->fetch_assoc()['nickname'];
 
       echo "login ✅ <br>
             Hi ! $un <br>
@@ -39,7 +45,7 @@
     </span>
   <div class="container">
 <?php
-    if ( isset($_COOKIE["week5"])){
+    if ( $un ){
       echo "
     <!-- write a main comment -->
     <form action=./comments/comment.php method=post>
@@ -47,6 +53,7 @@
       <h2>輸入主留言</h2>
           <label for=main_comment>Comment</label>
           <textarea rows=5 cols=30 name=main_comment id=main_comment required></textarea>
+          <input type=hidden name=user_id value={$unId}>
           <button type=submit>submit</button>
       </div>
     </form>";
@@ -75,9 +82,14 @@ $result = $conn->query($readAll);
   if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
       $id = $row["id"];
-      $nickname = $row["nickname"];
+      $main_user_id = $row["user_id"];
       $content = $row["content"];
       $created_at = $row["created_at"];
+
+      $findAuthorInfo = "SELECT * FROM `users` WHERE `id` = '{$main_user_id}'";
+      $nickname = $conn->query($findAuthorInfo)->fetch_assoc()['nickname'];
+
+      
 
 echo "<div class=container__box>main comment {$id}。 at : {$created_at}
           <div class=box__nickname>暱稱：{$nickname}</div>
@@ -91,17 +103,33 @@ $sub_result = $conn->query($read_subAll);
 if ($sub_result->num_rows > 0) {
     while ($sub_row = $sub_result->fetch_assoc()) {
         $sub_id = $sub_row["id"];
-        $sub_nickname = $sub_row["nickname"];
+        $sub_user_id = $sub_row["user_id"];
         $sub_content = $sub_row["sub_content"];
         $created_at = $sub_row["created_at"];
-        echo "<!-- sub comment -->
-          <div class=box__reply>
+
+
+        $findAuthorInfo = "SELECT * FROM `users` WHERE `id` = '{$sub_user_id}'";
+        $sub_nickname = $conn->query($findAuthorInfo)->fetch_assoc()['nickname'];
+        
+        // 原作者在自己的留言底下回覆的話，背景會顯示不同的顏色
+        if ( $sub_user_id === $main_user_id){
+          echo "<!-- sub comment -->
+          <div class=box__authorReply>
             <div class=reply__nickname>{$sub_nickname}  at: {$created_at}</div>
             <div class=reply__content>{$sub_content}</div>
           </div>";
+
+        } else {
+
+          echo "<!-- sub comment -->
+            <div class=box__reply>
+              <div class=reply__nickname>{$sub_nickname}  at: {$created_at}</div>
+              <div class=reply__content>{$sub_content}</div>
+            </div>";
+        }
     }
 }
-          if ( isset($_COOKIE["week5"])){
+          if ( $un ){
           echo"
           <!-- write a sub comment here -->
           <form action=./comments/sub_comment.php method=post>
@@ -110,6 +138,7 @@ if ($sub_result->num_rows > 0) {
               <label for=sub_comment>Comment</label>
               <textarea rows=5 cols=30 name=sub_comment id=sub_comment required></textarea>
               <input type=hidden name=comment_id value={$id}>
+              <input type=hidden name=user_id value={$unId}>
               <button type=submit>submit</button>
             </div>
           </form>";

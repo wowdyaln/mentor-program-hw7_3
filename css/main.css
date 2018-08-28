@@ -81,6 +81,15 @@ button {
   flex-direction: column;
 }
 
+.box__authorReply {
+  width: 80%;
+  border: dashed orange;
+  background-color: rgb(190, 201, 207);
+  margin: 15px 10% 0px 10%;
+  display: flex;
+  flex-direction: column;
+}
+
 .reply__nickname {
   /* border: solid rgb(77, 144, 170); */
   margin: 5px 10px;
