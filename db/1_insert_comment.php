@@ -1,30 +1,20 @@
 <?
 require './conn.php';
 
-$nicknames = ["Scott and Zelda Fitzgerald",
-"Jean Cocteau",
-"Brick top",
-"Hemingway",
-"Mark Twain",
-"Sertride Stein",
-"Belmonte",
-"Pablo",
-"Adriana",
-"Amedeo",
-"Modigliani",
-"Cole Porter",
-"Define",
-"Archibald MacLeish",
-"Dejuan Barnes",
-"Dal",
-"Señor Bunuel",
-"Man Ray",
-"Tom Stearns Eliot",
-"Matisse",
-"Paul Gaugin",
-"Degas",
-"Lautrec",
-"Richard"];
+$getUserId = "SELECT id FROM users ";
+$userIds = [];
+
+if ($conn->query($getUserId) ){
+  $temp = $conn->query($getUserId);
+
+  if( $temp->num_rows > 0){
+    while ($row = $temp->fetch_assoc()){
+      $id = $row['id'];
+      array_push($userIds, $id);
+    }
+  }
+}
+// var_dump($userIds);
 
 $comments = [
   "人類要黴菌只是為了它的酵素。黴菌可能需要空氣，但是酵素不需要。"
@@ -55,12 +45,12 @@ $comments = [
 ];
 
 for ($i=0; $i < 20; $i++){
-  $name = $nicknames[ mt_rand(0, count($nicknames)-1 )];
+  $user_id = $userIds[ mt_rand(0, count($userIds)-1 )];
   $content = $comments[ mt_rand(0, count($comments)-1 )];
 
-  $writeAcomment = "INSERT INTO `comments` (`id`, `nickname`, `content`, `created_at`) VALUES (NULL, '$name', '$content', CURRENT_TIMESTAMP )";
+  $writeAcomment = "INSERT INTO `comments` (`id`, `content`, `created_at`, `user_id`) VALUES (NULL, '$content', CURRENT_TIMESTAMP, '$user_id' )";
   if ($conn->query($writeAcomment)) {
-    echo "good!";
+    echo "good! <br>";
   } else {
       echo " Error: {$conn->error} :
                       sql: {$writeAcomment}  ";

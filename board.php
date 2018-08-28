@@ -147,7 +147,6 @@ if ($sub_result->num_rows > 0) {
         echo "</div>";
         }
       }
-
   ?>
   </div>
 
@@ -162,9 +161,7 @@ if ($sub_result->num_rows > 0) {
               // echo "<span><a href=board.php?page={$i}>{$i}</a></span>";
             }
           }
-
         ?>
-  
   </div> 
 </body>
 </html>
