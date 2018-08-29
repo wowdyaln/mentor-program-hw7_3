@@ -104,7 +104,9 @@ echo "<div class=container__box>main comment {$id}。 at : {$created_at}
               <input type=hidden name=comment_content value={$content}>
               <button>EDIT</button>
             </form>
-            <form action=./index.php method=post>
+
+            <form action=./action/delete_comment.php method=post >
+              <input type=hidden name=comment_id value={$id}>
               <button style='background-color: red;'>DELETE</button>
             </form>";
           }
