@@ -14,9 +14,10 @@
     //conncet to mySQL
     require './db/conn.php';
 
-    $un = false;
-    $unId = false;
-    $user_id = false;
+    $un = false;   //current user's name
+    $unId = false; //current user's id
+
+    // $user_id = false;
 
 
     if ( isset($_COOKIE["week5"])){
@@ -48,7 +49,7 @@
     if ( $un ){
       echo "
     <!-- write a main comment -->
-    <form action=./comments/comment.php method=post>
+    <form action=./action/create_comment.php method=post>
       <div class=container__input>
       <h2>輸入主留言</h2>
           <label for=main_comment>Comment</label>
@@ -94,6 +95,19 @@ $result = $conn->query($readAll);
 echo "<div class=container__box>main comment {$id}。 at : {$created_at}
           <div class=box__nickname>暱稱：{$nickname}</div>
           <div class=box__content>留言：<p>{$content}</p></div>";
+          if ( $unId === $main_user_id) {
+
+            echo "
+            <form action=./edit.php method=post>
+              <input type=hidden name=comment_id value={$id}>
+              
+              <input type=hidden name=comment_content value={$content}>
+              <button>EDIT</button>
+            </form>
+            <form action=./index.php method=post>
+              <button style='background-color: red;'>DELETE</button>
+            </form>";
+          }
 
 
 // read all sub_comments from mySQL
@@ -132,7 +146,7 @@ if ($sub_result->num_rows > 0) {
           if ( $un ){
           echo"
           <!-- write a sub comment here -->
-          <form action=./comments/sub_comment.php method=post>
+          <form action=./action/create_sub_comment.php method=post>
             <div class=container__input>
               <h2>子留言</h2>
               <label for=sub_comment>Comment</label>

@@ -17,13 +17,13 @@
   $comment = htmlspecialchars($raw_comment, ENT_QUOTES);
 
   $user_id = $_POST['user_id'];
-  $writeAcomment = "INSERT INTO `comments` (`id`, `nickname`, `content`, `user_id` ) VALUES (NULL, '$nickname', '$comment', '$user_id' )";
+  $writeAcomment = "INSERT INTO `comments` (`id`, `content`, `created_at`, `user_id` ) VALUES (NULL, '$comment', CURRENT_TIMESTAMP, '$user_id' )";
 
   if ($conn->query($writeAcomment)) {
   // INSERT INTO success
   header("Location: ../board.php");
   } else {
   echo " Error: {$conn->error} :
-            sql: {$sql}  ";
+            sql: {$writeAcomment}  ";
   }
 ?>

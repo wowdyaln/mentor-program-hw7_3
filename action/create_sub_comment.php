@@ -18,14 +18,14 @@
 
       $user_id = $_POST['user_id'];
       $comment_id = $_POST['comment_id'];
-      $write_subComment = "INSERT INTO `sub_comments` (`id`, `comment_id`, `nickname`, `sub_content`, `created_at`, `user_id`) VALUES (NULL, '{$comment_id}', '{$nickname}', '{$comment}', CURRENT_TIMESTAMP, '{$user_id}')";
+      $write_subComment = "INSERT INTO `sub_comments` (`id`, `comment_id`, `sub_content`, `created_at`, `user_id`) VALUES (NULL, '{$comment_id}', '{$comment}', CURRENT_TIMESTAMP, '{$user_id}')";
 
       if ($conn->query($write_subComment)) {
         // INSERT INTO success
         header("Location: ../board.php");
       } else {
           echo " Error: {$conn->error} :
-                    sql: {$sql}  ";
+                    sql: {$write_subComment}  ";
       }
       ?>
   
