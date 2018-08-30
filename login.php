@@ -8,7 +8,7 @@ $raw_password = $_POST['password'];
 // 預防 XSS 腳本寫入攻擊
 $username = htmlspecialchars($raw_username, ENT_QUOTES);
 $password = htmlspecialchars($raw_password, ENT_QUOTES);
-
+// todo: 使用 php 的 $_SESSION['week'] ，不用資料庫存取。(目前全部自行寫邏輯去操作)
 // password 要經過 hash function ，然後去對比 hash
 $findUser = "SELECT * FROM users WHERE username = '$username' ";
 $hash = $conn->query($findUser)->fetch_assoc()['password'];

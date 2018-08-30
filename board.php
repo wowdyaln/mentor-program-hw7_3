@@ -32,7 +32,8 @@
 
       echo "login ✅ <br>
             Hi ! $un <br>
-            ($nk)";
+            ($nk) <br>
+      <a href=./logout.php>登出</a>";
     } else {
       echo "login ❌
       <br>
