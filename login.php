@@ -30,7 +30,7 @@ if ($conn->query($findSession)->num_rows === 1){
 }
 // setcookie($name, $value, $expire)
 $cookie = $newSession;
-setcookie("week5", $cookie, time() + 60 * 3);
+setcookie("week5", $cookie, time() + 60 * 60);
 
 echo "<h2>登入成功</h2>  {$username}  你好！";
 
