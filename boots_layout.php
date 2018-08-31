@@ -63,23 +63,27 @@
         </ul>
       </div>
     </nav>    
+
     <!-- you can send main comment if login -->
     <?php
       if ( $un ){
           echo "
-            <form action=./action/create_comment.php method=post>
-              <fieldset>
-                <legend>輸入主留言</legend>
-                <div class=form-group>
-                      <label for=main_comment>Comment</label>
-                      <textarea class=form-control rows=5 cols=30 name=main_comment id=main_comment required></textarea>
-                </div>
-                <div class=form-group>
-                      <input type=hidden name=user_id value={$unId}>
-                      <button type=submit class='btn btn-primary'>submit</button>
-                </div>
-              </fieldset>
-            </form>";
+          <div class='row justify-content-center'>
+            <div class='card bg-secondary text-white col-12'>
+              <div class='card-header'>
+                <h4 class='text-center'>輸入主留言</h4>
+              </div>
+              <div class='card-body list-group'>
+                  <form action=./action/create_comment.php method=post>
+                    <label for=main_comment>Comment</label>
+                    <textarea class=form-control rows=5 cols=30 name=main_comment id=main_comment placeholder='type comment here' required></textarea>
+                    <input type=hidden name=user_id value={$unId}>
+                    <button type=submit class='btn btn-primary btn-lg btn-block'>送出</button>
+                  </form>
+              </div>
+            </div>
+          </div>
+            ";
       }
       //conncet to mySQL
       // require './db/conn.php';
@@ -111,16 +115,17 @@
           $nickname = $conn->query($findAuthorInfo)->fetch_assoc()['nickname'];        
 
           echo "<div class='card border-success'>
-                  <div class=card-header>main comment {$id}。 at : {$created_at}</div>
+                  <div class=card-header>main comment {$id}。Post at : {$created_at}</div>
                   <div class=card-body>
                     <h4 class=card-title>暱稱：{$nickname}</h4>
-                    <p>{$content}</p>
+                    <h5>{$content}</h5>
                   </div>
                 ";
 
           if ( $unId === $main_user_id) {
                   echo "
-                  <div class=card-body>
+                <div class=card-body>
+                  <div class=btn-group role=group aria-label='Basic example'>
                     <form action=./edit.php method=post>
                       <input type=hidden name=comment_id value={$id}>
                       <input type=hidden name=comment_content value={$content}>
@@ -132,6 +137,7 @@
                       <button type=submit class='btn btn-outline-danger'>DELETE</button>
                     </form>
                   </div>
+                </div>
                   ";
           }
 
@@ -149,91 +155,98 @@
                     $findAuthorInfo = "SELECT * FROM `users` WHERE `id` = '{$sub_user_id}'";
                     $sub_nickname = $conn->query($findAuthorInfo)->fetch_assoc()['nickname'];
 
+
+                    echo "
+                          <div class='row justify-content-center'>
+                    ";
                     // 原作者在自己的留言底下回覆的話，背景會顯示不同的顏色
                     if ($sub_user_id === $main_user_id) {
                         echo "<!--author's sub comment -->
-                                  <div class=container>
                                     <div class='card border-danger col-8'>
                                       <div class=card-body>
-                                        <h4 class=card-title>Author: {$sub_nickname} </h4>
+                                        <h4 class='card-title text-center'>Author: {$sub_nickname} </h4>
 
                                         <p class=card-text>reply at: {$created_at}</p>
                                         <p class=card-text>{$sub_content}</p>
                                       </div>
                                     </div>
-                                </div>
                               ";
 
                     } else {
 
                         echo "<!-- sub comment -->
-                                <div class=container>
+                                
                                     <div class='card border-warning col-10'>
                                       <div class=card-body>
-                                        <h6 class=card-title>{$sub_nickname} reply at: {$created_at}</h6>
+                                        <p class=card-text>reply at: {$created_at}</p>
+                                        <h6 class=card-title>{$sub_nickname} :</h6>
                                         <p class=card-text>{$sub_content}</p>
                                       </div>
                                     </div>
-                                </div>
                               ";
                     }
+                    echo "
+                      </div>
+                    ";
                 }
             }
             if ($un) {
                 echo "
-                
-                          <!-- write a sub comment here -->
-                          <form action=./action/create_sub_comment.php method=post>
-                            <div class=container__input>
-                              <h2>子留言</h2>
-                              <label for=sub_comment>Comment</label>
-                              <textarea rows=5 cols=30 name=sub_comment id=sub_comment required></textarea>
-                              <input type=hidden name=comment_id value={$id}>
-                              <input type=hidden name=user_id value={$unId}>
-                              <button type=submit>submit</button>
-                            </div>
-                          </form>";
+                    <!-- write a sub comment here -->
+                    <div class='row justify-content-center'>
+                      <div class='card bg-light col-10'>
+                        <form action=./action/create_sub_comment.php method=post>
+                          <fieldset>
+                            <legend>子留言</legend>
+                              <div class=form-group>
+                                <label for=sub_comment>reply</label>
+                                <textarea class=form-control rows=5 cols=30 name=sub_comment id=sub_comment required></textarea>
+                              </div>
+
+                              <div class=form-group>
+                                <input type=hidden name=comment_id value={$id}>
+                                <input type=hidden name=user_id value={$unId}>
+                                <button type=submit class='btn btn-primary'>送出</button>
+                              </div>
+
+                          </fieldset>
+                        </form>
+                      </div>
+                    </div>
+                        ";
+
             }
 
             echo "</div>";
-
         }
       }
     ?>
 
-<div class="card border-primary " >
-  <div class="card-header">Header</div>
-  <div class="card-body">
-    <h4 class="card-title">Primary card title</h4>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
+<div>
+  <ul class="pagination">
+    
+    <? // pages
+      for ($i=1; $i <= $pages_count; $i++){
+        if($i === $current_page){
+          echo "
+          <li class='page-item active'>
+            <a class=page-link href=boots_layout.php?page={$i}>{$i}</a>
+          </li>";
 
-  <div class="container">
-      <div class="card border-light .col-md-8">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-          <h4 class="card-title">Light card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-        <div class="card-body">
-          <h4 class="card-title">Light card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-  </div>
+        } else {
+          echo "
+          <li class=page-item>
+            <a class=page-link href=boots_layout.php?page={$i}>{$i}</a>
+          </li>
+          ";
+        }
+      }
+    ?>
+     
 
-</div>
-
-
-
+    </ul>
+  </div> 
 </div><!-- container -->
-
-
-
-
-
-</div>
-
 
 
 

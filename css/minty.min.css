@@ -275,7 +275,7 @@ button,
 select,
 optgroup,
 textarea {
-  margin: 0;
+  margin: 5px 0px;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -5089,6 +5089,7 @@ input[type="button"].btn-block {
 }
 
 .card {
+  margin: 5px;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
