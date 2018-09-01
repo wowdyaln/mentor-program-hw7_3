@@ -42,8 +42,6 @@
     
     ?>
   </span>
-    
-
 
 <div class="container">
     <!-- navbar -->
@@ -222,12 +220,11 @@
       }
     ?>
 
-<div>
-  <ul class="pagination">
-    
+  <div>
+    <ul class="pagination">
     <? // pages
       for ($i=1; $i <= $pages_count; $i++){
-        if($i === $current_page){
+        if($current_page == $i){    // !: [疑問] 不能使用 '===' 
           echo "
           <li class='page-item active'>
             <a class=page-link href=boots_layout.php?page={$i}>{$i}</a>
@@ -242,17 +239,14 @@
         }
       }
     ?>
-     
-
     </ul>
   </div> 
 </div><!-- container -->
-
-
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="./script/jquery.js"></script>
     <script src="./script/popper.min.js"></script>
     <script src="./script/bootstrap.min.js"></script>
+    <script src="./script/main.js"></script>
   </body>
 </html>

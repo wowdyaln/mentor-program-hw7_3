@@ -1,28 +1,30 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- <link rel="stylesheet" type="text/css" media="screen" href="./css/main.css"> -->
+  <link rel="stylesheet" type="text/css" media="screen" href="./css/minty.min.css">
+  <title>Test</title>
+</head>
+<body>
 
 
-$_SESSION['test'] = session_create_id(); //設置Session變數
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 
-echo "\$_SESSION['test']變數值：" . $_SESSION['test'];
 
-echo "<hr />";
 
-//使用isset()函數檢查變數是否有被設置
-// echo ("清空Session變數前：");
-// if (isset($_SESSION['test'])) {
-//     echo ("有設置變數");
-// } else {
-//     echo ("未設置變數");
-// }
 
-// echo "<hr />";
 
-// session_unset("test");
-// //unset($_SESSION['test']);
-
-// echo ("清空Session變數後：");
-// if (isset($_SESSION['test'])) {
-//     echo ("有設置變數");
-// } else {
-//     echo ("未設置變數");
-// }
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="./script/jquery.js"></script>
+    <script src="./script/popper.min.js"></script>
+    <script src="./script/bootstrap.min.js"></script>
+  </body>
+</html>
