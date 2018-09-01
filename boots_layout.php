@@ -8,79 +8,78 @@
   <link rel="stylesheet" type="text/css" media="screen" href="./css/minty.min.css">
   <title>Minty board</title>
 </head>
-<body>
-  <span class="loginStatus"> 
-    <?php
-    //conncet to mySQL
-    require './db/conn.php';
+<?php
+  //conncet to mySQL
+  require './db/conn.php';
 
-    $un = false;   //current user's name
-    $unId = false; //current user's id
+  $un = false;   //current user's name
+  $unId = false; //current user's id
 
-    if ( isset($_COOKIE["week5"])){
-            // find a user according to Cookies.
-      $session = $_COOKIE["week5"];
-      $findUsername = "SELECT * FROM users_certificate WHERE `session` = '{$session}'";
-      $un = $conn->query($findUsername)->fetch_assoc()['username'];
-      
-      $findUserInfo = "SELECT * FROM `users` WHERE `username` = '{$un}'";
-      $unId = $conn->query($findUserInfo)->fetch_assoc()['id'];
-      $nk = $conn->query($findUserInfo)->fetch_assoc()['nickname'];
-
-      echo "login ✅ <br>
-            Hi ! $un <br>
-            ($nk) <br>
-      <a href=./logout.php>登出</a>";
-    } else {
-      echo "login ❌
-      <br>
-      要登入才能留言
-      <br>
-      <a href=./verify.php>登入頁面</a>
-      ";
-    }
+  if ( isset($_COOKIE["week5"])){ // find a user according to Cookies.
+    $session = $_COOKIE["week5"];
+    $findUsername = "SELECT * FROM users_certificate WHERE `session` = '{$session}'";
+    $un = $conn->query($findUsername)->fetch_assoc()['username'];
     
-    ?>
-  </span>
+    $findUserInfo = "SELECT * FROM `users` WHERE `username` = '{$un}'";
+    $unId = $conn->query($findUserInfo)->fetch_assoc()['id'];
+    $nk = $conn->query($findUserInfo)->fetch_assoc()['nickname'];
+  }
+?>
+<body class="mt-5">
+  <!-- navbar -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="./boots_layout.php">留言板</a>
+    <span class="navbar-text">
+        <?
+        if ($un) {
+          echo "login ✅  Hello! $un ( $nk )";
+        } else {
+          echo "login ❌  要登入才能留言 ";
+        }
+        ?>
+    </span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <?
+        if (!$un) {
+          echo "
+          <li class=nav-item>
+            <a class=nav-link href=./verify.php>登入</a>
+          </li>
+          ";
+        }
+        if ($un) {
+          echo "
+          <li class=nav-item>
+          <a class=nav-link href=./logout.php>登出</a>
+          </li>";
+        }
+        ?>
+      </ul>
+    </div>
+  </nav> 
 
 <div class="container">
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">留言板</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="./index.php">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./verify.php">verify</a>
-          </li>
-        </ul>
-      </div>
-    </nav>    
-
     <!-- you can send main comment if login -->
     <?php
       if ( $un ){
           echo "
-          <div class='row justify-content-center'>
-            <div class='card bg-secondary text-white col-12'>
+            <div class='card border-primary row justify-content-center sticky-top'>
               <div class='card-header'>
                 <h4 class='text-center'>輸入主留言</h4>
               </div>
-              <div class='card-body list-group'>
+              <div class='card-body'>
                   <form action=./action/create_comment.php method=post>
-                    <label for=main_comment>Comment</label>
-                    <textarea class=form-control rows=5 cols=30 name=main_comment id=main_comment placeholder='type comment here' required></textarea>
+                    <label for=main_comment>Main Comment</label>
+                    <textarea class=form-control rows=2 name=main_comment id=main_comment placeholder='type comment here' required></textarea>
                     <input type=hidden name=user_id value={$unId}>
-                    <button type=submit class='btn btn-primary btn-lg btn-block'>送出</button>
+                    <button type=submit class='btn btn-outline-primary btn-lg btn-block mt-3'>送出</button>
                   </form>
               </div>
             </div>
-          </div>
             ";
       }
       //conncet to mySQL
@@ -112,8 +111,10 @@
           $findAuthorInfo = "SELECT * FROM `users` WHERE `id` = '{$main_user_id}'";
           $nickname = $conn->query($findAuthorInfo)->fetch_assoc()['nickname'];        
 
-          echo "<div class='card border-success'>
-                  <div class=card-header>main comment {$id}。Post at : {$created_at}</div>
+          echo "<div class='card border-success mt-3'>
+                  <div class=card-header>
+                    main comment {$id}。Post at : {$created_at}
+                  </div>
                   <div class=card-body>
                     <h4 class=card-title>暱稱：{$nickname}</h4>
                     <h5>{$content}</h5>
@@ -122,20 +123,22 @@
 
           if ( $unId === $main_user_id) {
                   echo "
-                <div class=card-body>
-                  <div class=btn-group role=group aria-label='Basic example'>
-                    <form action=./edit.php method=post>
-                      <input type=hidden name=comment_id value={$id}>
-                      <input type=hidden name=comment_content value={$content}>
-                      <button type=submit class='btn btn-outline-warning'>EDIT</button>
-                    </form>
+                  <div class='d-flex justify-content-around'>
+                    <div>
+                      <form action=./edit.php method=post>
+                        <input type=hidden name=comment_id value={$id}>
+                        <input type=hidden name=comment_content value={$content}>
+                        <button type=submit class='btn btn-outline-warning'>EDIT</button>
+                      </form>
+                    </div>
 
-                    <form action=./action/delete_comment.php method=post >
-                      <input type=hidden name=comment_id value={$id}>
-                      <button type=submit class='btn btn-outline-danger'>DELETE</button>
-                    </form>
+                    <div>
+                      <form action=./action/delete_comment.php method=post >
+                        <input type=hidden name=comment_id value={$id}>
+                        <button type=submit class='btn btn-outline-danger'>DELETE</button>
+                      </form>
+                    </div>
                   </div>
-                </div>
                   ";
           }
 
@@ -160,28 +163,25 @@
                     // 原作者在自己的留言底下回覆的話，背景會顯示不同的顏色
                     if ($sub_user_id === $main_user_id) {
                         echo "<!--author's sub comment -->
-                                    <div class='card border-danger col-8'>
-                                      <div class=card-body>
-                                        <h4 class='card-title text-center'>Author: {$sub_nickname} </h4>
+                                <div class='card border-danger col-8'>
+                                  <div class=card-body>
+                                    <h4 class='card-title text-center'>Author: {$sub_nickname} </h4>
 
-                                        <p class=card-text>reply at: {$created_at}</p>
-                                        <p class=card-text>{$sub_content}</p>
-                                      </div>
-                                    </div>
-                              ";
-
+                                    <p class=card-text>reply at: {$created_at}</p>
+                                    <p class=card-text>{$sub_content}</p>
+                                  </div>
+                                </div>
+                          ";
                     } else {
-
                         echo "<!-- sub comment -->
-                                
-                                    <div class='card border-warning col-10'>
-                                      <div class=card-body>
-                                        <p class=card-text>reply at: {$created_at}</p>
-                                        <h6 class=card-title>{$sub_nickname} :</h6>
-                                        <p class=card-text>{$sub_content}</p>
-                                      </div>
-                                    </div>
-                              ";
+                              <div class='card border-warning col-10'>
+                                <div class=card-body>
+                                  <p class=card-text>reply at: {$created_at}</p>
+                                  <h6 class=card-title>{$sub_nickname} :</h6>
+                                  <p class=card-text>{$sub_content}</p>
+                                </div>
+                              </div>
+                        ";
                     }
                     echo "
                       </div>
@@ -192,12 +192,12 @@
                 echo "
                     <!-- write a sub comment here -->
                     <div class='row justify-content-center'>
-                      <div class='card bg-light col-10'>
+                      <div class='card bg-light col-10 mb-3'>
                         <form action=./action/create_sub_comment.php method=post>
                           <fieldset>
-                            <legend>子留言</legend>
+                            <h4 class='text-center font-weight-light mt-3 mb-0'>子留言</h4>
                               <div class=form-group>
-                                <label for=sub_comment>reply</label>
+                                <label for=sub_comment class=mb-0>reply</label>
                                 <textarea class=form-control rows=5 cols=30 name=sub_comment id=sub_comment required></textarea>
                               </div>
 
@@ -212,7 +212,6 @@
                       </div>
                     </div>
                         ";
-
             }
 
             echo "</div>";
@@ -220,8 +219,8 @@
       }
     ?>
 
-  <div>
-    <ul class="pagination">
+  <div class='fixed-bottom'>
+    <ul class="pagination justify-content-start">
     <? // pages
       for ($i=1; $i <= $pages_count; $i++){
         if($current_page == $i){    // !: [疑問] 不能使用 '===' 
