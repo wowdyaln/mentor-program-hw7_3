@@ -1,10 +1,10 @@
+<link rel="stylesheet" type="text/css" media="screen" href="./css/minty.min.css">
+
 <?
   //conncet to mySQL
-require('./db/conn.php');
+  require('./db/conn.php');
 
-
-
-// get data from index.php/form
+  // get data from index.php/form
   $raw_username = $_POST['username'];
   $raw_nickname = $_POST['nickname'];
   $raw_password = $_POST['password'];
@@ -20,14 +20,16 @@ require('./db/conn.php');
   $sql = "INSERT INTO `users` (`id`, `username`,nickname, `password`) VALUES (NULL, '{$username}','{$nickname}', '{$hash}') ";
 
   if ( $conn->query($sql) ) {
-    echo "New user created successfully 
-    {$username}  你好！
+    echo "
+    <div class='alert alert-success text-center' role=alert>
+      <strong>{$username}  你好!</strong> New user created successfully.
+    </div>
+
+    <a class='btn btn-primary btn-block' href=./board.php role=button>往留言板 </a>
     ";
-} else {
-    echo " Error: {$conn->error} :
+    } else {
+        echo " Error: {$conn->error} :
+    sql: {$sql}  ";
+    }
 
-sql: {$sql}  ";
-}
-
-echo "<br> <a href=./board.php> 留言板 </a>";
 ?>

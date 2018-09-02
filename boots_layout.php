@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- <link rel="stylesheet" type="text/css" media="screen" href="./css/main.css"> -->
   <link rel="stylesheet" type="text/css" media="screen" href="./css/minty.min.css">
   <title>Minty board</title>
 </head>

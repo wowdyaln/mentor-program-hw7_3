@@ -23,7 +23,7 @@
     $updateComment = "UPDATE `comments` SET `content` = '{$comment}' WHERE `comments`.`id` = {$id} ";
     if ($conn->query($updateComment)) {
     // INSERT INTO success
-    header("Location: ../board.php");
+    header("Location: ../boots_layout.php");
     } else {
     echo " Error: {$conn->error} :
               sql: {$updateComment}  ";

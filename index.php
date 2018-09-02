@@ -11,6 +11,8 @@ if ( isset($_COOKIE["week5"])){
   <a href=./verify.php> 登入（註冊）頁面 </a>
   <br>
   <a href=./board.php> 留言板 </a>
+  <br>
+  <a href=./boots_layout.php> bootstrap留言板 </a>
   ";
 }
 ?>

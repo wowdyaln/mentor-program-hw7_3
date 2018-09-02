@@ -1,7 +1,6 @@
-// 刪除之後也要把子留言都刪除。
-// 要有確定刪除？的提示
-<!-- main comment -->
 <?php
+// todo: 確定刪除？的提示. 要有刪除成功的提示。
+
   //conncet to mySQL
   require '../db/conn.php';
   // find a user according to Cookies.
@@ -23,7 +22,7 @@
   $delete_subComment = "DELETE FROM `sub_comments` WHERE `sub_comments`.`comment_id` = {$id}";
     if ($conn->query($deleteComment) && $conn->query($delete_subComment)) {
     // DELETE success
-    header("Location: ../board.php");
+    header("Location: ../boots_layout.php");
     } else {
     echo " Error: {$conn->error} :
               sql: {$updateComment}  ";
@@ -31,7 +30,6 @@
   } else {
     var_dump ($comment_userId);
     var_dump ($userId);
-    // header("Location: ../index.php");
   }
 
 ?>

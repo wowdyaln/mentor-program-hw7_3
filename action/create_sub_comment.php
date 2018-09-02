@@ -22,7 +22,7 @@
 
       if ($conn->query($write_subComment)) {
         // INSERT INTO success
-        header("Location: ../board.php");
+        header("Location: ../boots_layout.php");
       } else {
           echo " Error: {$conn->error} :
                     sql: {$write_subComment}  ";
