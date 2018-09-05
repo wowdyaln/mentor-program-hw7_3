@@ -31,9 +31,9 @@
     <span class="navbar-text">
         <?
         if ($un) {
-          echo "login ✅  Hello! $un ( $nk )";
+          echo "已登入 ✅  Hello! $un ( $nk )";
         } else {
-          echo "login ❌  要登入才能留言 ";
+          echo "未登入 ❌  要登入才能留言 ";
         }
         ?>
     </span>
@@ -121,25 +121,72 @@
                 ";
 
           if ( $unId === $main_user_id) {
-                  echo "
-                  <div class='d-flex justify-content-around'>
-                    <div>
-                      <form action=./edit.php method=post>
-                        <input type=hidden name=comment_id value={$id}>
-                        <input type=hidden name=comment_content value={$content}>
-                        <button type=submit class='btn btn-outline-warning'>EDIT</button>
-                      </form>
-                    </div>
+                        echo "
+                        <div class='d-flex justify-content-around'>
+                            <div>
+                            <!-- Button trigger modal -->
+                            <button type=button class='btn btn-outline-warning' data-toggle='modal' data-target='#editModal'>編輯主留言</button>
+                            </button>
 
-                    <div>
-                      <form action=./action/delete_comment.php method=post >
-                        <input type=hidden name=comment_id value={$id}>
-                        <button type=submit class='btn btn-outline-danger'>DELETE</button>
-                      </form>
-                    </div>
+                            <!-- Modal -->
+                            <div class='modal fade' id='editModal' tabindex='-1' role='dialog' aria-labelledby='editModalLabel' aria-hidden='true'>
+                              <div class='modal-dialog' role='document'>
+                                <div class='modal-content'>
+                                  <div class='modal-header'>
+                                    <h5 class='modal-title' id='editModalLabel'>編輯 主留言</h5>
+                                    <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                      <span aria-hidden='true'>&times;</span>
+                                    </button>
+                                  </div>
+                                <form action=./action/edit_comment.php method=post>
+                                  <div class='modal-body'>
+                                      <input type=hidden name=comment_id value={$id}>
+                                      <label for=main_comment class=mb-0>主留言</label>
+                                      <textarea class=form-control rows=2 name=main_comment id=main_comment required>{$content}</textarea>
+                                  </div>
+                                      <div class='modal-footer'>
+                                      <button type=submit class='btn btn-primary'>送出</button>
+                                      <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                  </div>
+                                </form>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>   
+                        <div>
+                            <!-- Button trigger modal -->
+                            <button type=button class='btn btn-outline-danger' data-toggle='modal' data-target='#deleteModal'>刪除主留言</button>
+                            </button>
+
+                            <!-- Modal -->
+                            <div class='modal fade' id='deleteModal' tabindex='-1' role='dialog' aria-labelledby='deleteModalLabel' aria-hidden='true'>
+                              <div class='modal-dialog' role='document'>
+                                <div class='modal-content'>
+                                  <div class='modal-header'>
+                                    <h5 class='modal-title' id='deleteModalLabel'>確定刪除 主留言？</h5>
+                                    <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                      <span aria-hidden='true'>&times;</span>
+                                    </button>
+                                  </div>
+                                <form action=./action/delete_comment.php method=post>
+                                  <div class='modal-body'>
+                                      <p>{$content}</p>
+                                      <span aria-hidden='true'>刪除之後無法復原，確定嗎？</span>
+                                      <input type=hidden name=comment_id value={$id}>
+                                  </div>
+                                      <div class='modal-footer'>
+                                      <button type=submit class='btn btn-danger'>確定</button>
+                                      <button type='button' class='btn btn-info' data-dismiss='modal'>取消</button>
+                                  </div>
+                                </form>
+                                </div>
+                              </div>
+                            </div>
+                      </div>
+                            
                   </div>
-                  ";
-          }
+                          ";
+                  }
 
             // read all sub_comments from mySQL
             $read_subAll = "SELECT * FROM `sub_comments` WHERE comment_id = $id ORDER BY created_at DESC";
@@ -222,7 +269,7 @@
     <ul class="pagination justify-content-start">
     <? // pages
       for ($i=1; $i <= $pages_count; $i++){
-        if($current_page == $i){    // !: [疑問] 不能使用 '===' 
+        if($current_page == $i){    // !: 小心兩者型別不同 不能使用 '===' 
           echo "
           <li class='page-item active'>
             <a class=page-link href=boots_layout.php?page={$i}>{$i}</a>
