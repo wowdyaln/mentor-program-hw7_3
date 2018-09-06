@@ -71,7 +71,7 @@
                 <h4 class='text-center'>輸入主留言</h4>
               </div>
               <div class='card-body'>
-                  <form action=./action/create_comment.php method=post>
+                  <form id=comment_ajax action=./action/create_comment.php method=post>
                     <label for=main_comment>Main Comment</label>
                     <textarea class=form-control rows=2 name=main_comment id=main_comment placeholder='type comment here' required></textarea>
                     <input type=hidden name=user_id value={$unId}>
