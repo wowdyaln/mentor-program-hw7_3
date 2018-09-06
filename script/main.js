@@ -12,7 +12,6 @@ $(document).ready( ()=> {
     let comment = $('#main_comment').val()
     // 從前端拿到資料，傳到後端
 
-    $.post("./action/create_comment.php", { user_id: authorId, main_comment: comment })
 
     $.ajax({
       type: "POST",
