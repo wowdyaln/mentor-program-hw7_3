@@ -12,6 +12,23 @@ $(document).ready( ()=> {
     let comment = $('#main_comment').val()
     // 從前端拿到資料，傳到後端
 
+    $.post("./action/create_comment.php", { user_id: authorId, main_comment: comment })
+
+    $.ajax({
+      type: "POST",
+      url: "./action/create_comment.php",
+      data: {
+        user_id: authorId,
+        main_comment: comment
+      },
+      dataType: "text",
+      success: function (resp) {
+        let res = JSON.parse(resp)
+        console.log(res);
+      }
+    })
+
+
     let newCommentDom = $(`<h1>New comment TEST block: ${authorId}      ${comment}</h1>`)
 
     $('html, body').animate({

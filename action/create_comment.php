@@ -21,7 +21,13 @@
 
   if ($conn->query($writeAcomment)) {
   // INSERT INTO success
-  header("Location: ../boots_layout.php");
+    $lastId = $conn->insert_id;
+
+    $arr = array('last_id' => $lastId);
+    echo json_encode($arr);
+
+
+  // header("Location: ../boots_layout.php");
   } else {
   echo " Error: {$conn->error} :
             sql: {$writeAcomment}  ";
