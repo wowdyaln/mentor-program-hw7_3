@@ -1,5 +1,5 @@
 
-<!-- main comment -->
+
 <?php
   //conncet to mySQL
   require '../db/conn.php';
@@ -20,10 +20,16 @@
   $writeAcomment = "INSERT INTO `comments` (`id`, `content`, `created_at`, `user_id` ) VALUES (NULL, '$comment', CURRENT_TIMESTAMP, '$user_id' )";
 
   if ($conn->query($writeAcomment)) {
-  // INSERT INTO success
+  // INSERT INTO success ， response 傳回 last_id , nickname , 
+    // *資料庫拿到 剛生出來 main comment 的 id
     $lastId = $conn->insert_id;
 
-    $arr = array('last_id' => $lastId);
+    // *資料庫拿到 剛生出來 main comment 的 created_at （有沒有更快的方式？）
+    $findCreatedAt = "SELECT * FROM `comments` WHERE `id` = '$lastId' ";
+    $created_at = $conn->query($findCreatedAt)->fetch_assoc()['created_at'];
+
+    // response 回去
+    $arr = array('last_id' => $lastId, 'nickname' => $nickname, 'created_at' => $created_at);
     echo json_encode($arr);
 
 
