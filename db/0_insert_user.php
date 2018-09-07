@@ -232,25 +232,6 @@ $nicknames = [
 "Cupid"
 ];
 
-// 取得 comments 的所有 id, 存成 comments_id_Ary
-$getCommentsId = "SELECT id FROM comments";
-$commentsIds = [];
-
-if ($conn->query($getCommentsId)) {
-  $temp = $conn->query($getCommentsId);
-
-  if ($temp->num_rows > 0) {
-    while ($row = $temp->fetch_assoc()) {
-      $id = $row["id"];
-      array_push($commentsIds, $id);
-    }
-    // echo $commentsIds;
-
-  } else {
-      echo " Error: {$conn->error} :
-                      sql: {$getCommentsId}  ";
-  }
-}
 for ($i=0; $i < count($users); $i++){
   $user = $users[$i];
   $nickname = $nicknames[ mt_rand(0, count($nicknames)-1 )];
@@ -261,7 +242,7 @@ for ($i=0; $i < count($users); $i++){
     echo "good! create a user: '$user'. <br> ";
   } else {
       echo " Error: {$conn->error} :
-                      sql: {$postReply}  ";
+                      sql: {$createUser}  ";
   }
 }
 

@@ -48,12 +48,12 @@ for ($i=0; $i < 20; $i++){
   $user_id = $userIds[ mt_rand(0, count($userIds)-1 )];
   $content = $comments[ mt_rand(0, count($comments)-1 )];
 
-  $writeAcomment = "INSERT INTO `comments` (`id`, `content`, `created_at`, `user_id`) VALUES (NULL, '$content', CURRENT_TIMESTAMP, '$user_id' )";
-  if ($conn->query($writeAcomment)) {
+  $writeComment = "INSERT INTO `comments` (`id`, `content`, `created_at`, `user_id`) VALUES (NULL, '$content', CURRENT_TIMESTAMP, '$user_id' )";
+  if ($conn->query($writeComment)) {
     echo "good! <br>";
   } else {
       echo " Error: {$conn->error} :
-                      sql: {$writeAcomment}  ";
+                      sql: {$writeComment}  ";
   }
 }
 
