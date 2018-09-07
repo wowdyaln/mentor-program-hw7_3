@@ -22,6 +22,7 @@
 
       if ($conn->query($write_subComment)) {
         // INSERT INTO success
+        // todo: 要 locate 到原本留子留言那頁，而不是 locate 到第一頁
         header("Location: ../boots_layout.php");
       } else {
           echo " Error: {$conn->error} :

@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" type="text/css" media="screen" href="./css/minty.min.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="./css/boots_layout.css">
   <title>Minty board</title>
 </head>
 <?php
@@ -66,7 +67,7 @@
     <?php
       if ( $un ){
           echo "
-            <div class='card border-primary row justify-content-center sticky-top'>
+            <div id='main-comment-box' class='card border-primary row justify-content-center sticky-top'>
               <div class='card-header'>
                 <h4 class='text-center'>輸入主留言</h4>
               </div>
@@ -171,7 +172,7 @@
                                 <form action=./action/delete_comment.php method=post>
                                   <div class='modal-body'>
                                       <p>{$content}</p>
-                                      <span aria-hidden='true'>刪除之後無法復原，確定嗎？</span>
+                                      <span aria-hidden='true'>子留言也會一併刪除。刪除之後無法復原，確定嗎？</span>
                                       <input type=hidden name=comment_id value={$id}>
                                   </div>
                                       <div class='modal-footer'>
