@@ -25,7 +25,8 @@ $users = [
 "Paul Gaugin",
 "Degas",
 "Lautrec",
-"Richard"];
+"Richard",
+];
 
 
 $nicknames = [
@@ -232,18 +233,31 @@ $nicknames = [
 "Cupid"
 ];
 
-for ($i=0; $i < count($users); $i++){
-  $user = $users[$i];
-  $nickname = $nicknames[ mt_rand(0, count($nicknames)-1 )];
-  $password = password_hash('123', PASSWORD_DEFAULT);
+try {
+    $conn->autocommit(false);
+    $conn->begin_transaction();
 
-  $createUser = "INSERT INTO `users` (`id`, `username`, `nickname`, `password`) VALUES (NULL, '{$user}', '{$nickname}', '{$password}') ";
-  if ($conn->query($createUser)) {
-    echo "good! create a user: '$user'. <br> ";
-  } else {
-      echo " Error: {$conn->error} :
-                      sql: {$createUser}  ";
-  }
+    for ($i = 0; $i < count($users); $i++) {
+        $user = $users[$i];
+        $nickname = $nicknames[mt_rand(0, count($nicknames) - 1)];
+        $password = password_hash('123', PASSWORD_DEFAULT);
+        $createUser = "INSERT INTO `users` (`id`, `username`, `nickname`, `password`) VALUES (NULL, '{$user}', '{$nickname}', '{$password}') ";
+
+        if (!$conn->query($createUser)) {
+            throw new Exception($conn->error);
+        }
+        echo "... ... create a user: '$user' <br> ";
+    }
+    $conn->commit();
+    echo "all transaction succeeded.";
+
+} catch (Exception $e) {
+    $conn->rollback();
+
+    var_dump("Error: $e : <br><br>
+  sql: {$createUser}  <br><br>
+  all transaction failed.");
 }
+
 
 ?>
